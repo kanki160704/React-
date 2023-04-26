@@ -85,3 +85,15 @@
 要求：
 1. 函数名必须大写，不然会被认为是html标签
 2. 使用render时必须加入/符号，表示节点开关
+
+# 类式组件：类定义时必须继承react的component类，并且必须类名大写以及重写render函数
+```
+<script type="text/babel">
+    class MyComponent extends React.Component {
+        render() {
+            return <h1>bbb</h1>
+        }
+    }
+    ReactDOM.render(<MyComponent/>, document.getElementById("test"))
+</script>
+```
