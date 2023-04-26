@@ -86,7 +86,8 @@
 1. 函数名必须大写，不然会被认为是html标签
 2. 使用render时必须加入/符号，表示节点开关
 
-# 类式组件：类定义时必须继承react的component类，并且必须类名大写以及重写render函数
+# 类式组件：
+类定义时必须继承react的component类，并且必须类名大写以及重写render函数
 ```
 <script type="text/babel">
     class MyComponent extends React.Component {
@@ -96,4 +97,19 @@
     }
     ReactDOM.render(<MyComponent/>, document.getElementById("test"))
 </script>
+```
+
+# 动态定义：
+在构造器中添加state构造，能得到动态效果
+```
+    class MyComponent extends React.Component {
+        constructor() {
+            super();
+            this.state = {isHot: true}
+        }
+        render() {
+            return <h1>bbb{this.state.isHot ? "Hot" : "Cold"}</h1>
+        }
+    }
+    ReactDOM.render(<MyComponent/>, document.getElementById("test"))
 ```
