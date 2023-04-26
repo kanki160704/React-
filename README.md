@@ -113,3 +113,60 @@
     }
     ReactDOM.render(<MyComponent/>, document.getElementById("test"))
 ```
+
+# 添加点击事件的一种错误写法：
+这里点击事件是传入了一个函数，函数是通过this找到的，但是调用时会没有指代对象去调用
+```
+    class MyComponent extends React.Component {
+        constructor() {
+            super();
+            this.state = {isHot: false}
+        }
+        change() {
+            this.state.isHot = !this.state.isHot
+        }
+        render() {
+            return <h1 onClick = {this.change}>aaa{this.state.isHot ? "hot" : "cold"}</h1>
+        }
+    }
+    ReactDOM.render(<MyComponent/>, document.getElementById("test"))
+```
+
+# 添加点击事件的第二种错误写法：
+这里采用了bind方法，相当于将对象调用的函数改成了static的函数。这样再调用时就不会产生this的问题。但是这里change函数内改变参数的方式不正确。
+```
+    class MyComponent extends React.Component {
+        constructor() {
+            super();
+            this.state = {isHot: false}
+            this.change = this.change.bind(this)
+        }
+        change() {
+            this.state.isHot = !this.state.isHot
+        }
+        render() {
+            return <h1 onClick = {this.change}>aaa{this.state.isHot ? "hot" : "cold"}</h1>
+        }
+    }
+    ReactDOM.render(<MyComponent/>, document.getElementById("test"))
+```
+
+# 正确添加点击事件
+改变参数使用setState方法，并且这个方法只会改变传入的参数，而不是将别的参数也改掉。例如在这个例子中，如果有一个isWet属性，在change函数调用时不会影响该属性。
+在这里render会使用1+n次，n是点击的次数
+```
+    class MyComponent extends React.Component {
+        constructor() {
+            super();
+            this.state = {isHot: false}
+            this.change = this.change.bind(this)
+        }
+        change() {
+            this.setState({isHot: !this.state.isHot})
+        }
+        render() {
+            return <h1 onClick = {this.change}>aaa{this.state.isHot ? "hot" : "cold"}</h1>
+        }
+    }
+    ReactDOM.render(<MyComponent/>, document.getElementById("test"))
+```
