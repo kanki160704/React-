@@ -170,3 +170,18 @@
     }
     ReactDOM.render(<MyComponent/>, document.getElementById("test"))
 ```
+
+# 添加事件的简单方法
+这里不在构造器中写state，表明state是类中的静态变量。此外，change函数用=>定义表示静态方法，其中this可以认为是引用类MyComponent
+```
+    class MyComponent extends React.Component {
+        state = {isHot : true}
+        change = ()=>{
+            this.setState({isHot: !this.state.isHot})
+        }
+        render() {
+            return <h1 onClick = {this.change}>aaa{this.state.isHot ? "hot" : "cold"}</h1>
+        }
+    }
+    ReactDOM.render(<MyComponent/>, document.getElementById("test"))
+```
