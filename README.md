@@ -185,3 +185,36 @@
     }
     ReactDOM.render(<MyComponent/>, document.getElementById("test"))
 ```
+
+# props 使用
+可以动态生成页面。例如在下面的例子中，render函数动态调用props中属性并且输出。此外，通过propTypes与defaultProps两个变量可以控制输出的类型以及默认值
+```
+    class MyComponent extends React.Component {
+        static propTypes = {
+            name: PropTypes.string.isRequired,
+            age: PropTypes.number,
+            speak: PropTypes.func
+        }
+        static defaultProps = {
+            name: "aaa",
+            age: 10
+        }
+
+
+
+        render() {
+            return(
+                <ul>
+                    <li>姓名：{this.props.name}</li>
+                    <li>年龄：{this.props.age + 1}</li>
+                    <li>说花：{this.props.speak()}</li>
+                </ul>
+            )
+        }
+    }
+
+    function demo() {
+        return "xyx"
+    }
+    ReactDOM.render(<MyComponent name = "zs" age = {20} speak = {demo}/>, document.getElementById("test"))
+```
