@@ -220,3 +220,74 @@
     ReactDOM.render(<MyComponent name = "zs" age = {20} speak = {demo}/>, document.getElementById("test"))
     ReactDOM.render(<MyComponent {...p}/>, document.getElementById("test2"))
 ```
+
+# ref属性
+目的是让类中函数知道标签是什么。例如这里通过在标签中使用一个箭头函数，让类中有了一个input1对象，就可以在change函数中调用了。
+此外，如果render里面标签有了修改，那么render就会重新从头执行一次。
+```
+   class MyComponent extends React.Component {
+        change = () => {
+            alert(this.input1.value)
+        }
+        render() {
+            return(
+                <div>
+                    <input ref = {(c) => {this.input1 = c}}/>
+                    <button onClick = {this.change}>aaa</button>
+                </div>
+            )
+        }
+    }
+```
+
+# 使用createRef定义ref
+这里相当于在类中创建了一个容器，容器内容在标签中指定为该标签。注意多个标签不可以公用一个ref。
+```
+    class MyComponent extends React.Component {
+        myRef = React.createRef()
+        change = () => {
+            alert(this.myRef.current.value)
+        }
+        render() {
+            return(
+                <div>
+                    <input ref = {this.myRef}/>
+                    <button onClick = {this.change}>aaa</button>
+                </div>
+            )
+        }
+    }
+```
+
+# 使用字符串直接创建ref：不推荐
+```
+    class MyComponent extends React.Component {
+        change = () => {
+            alert(this.refs.input1.value)
+        }
+        render() {
+            return(
+                <div>
+                    <input ref = "input1"/>
+                    <button onClick = {this.change}>aaa</button>
+                </div>
+            )
+        }
+    }
+```
+
+# 如果事件源和事件都指的是一个标签，那么可以省略ref而通过event.target 方法
+```
+    class MyComponent extends React.Component {
+        change = (event) => {
+            alert(event.target.value)
+        }
+        render() {
+            return(
+                <div>
+                    <input onBlur = {this.change}/>
+                </div>
+            )
+        }
+    }
+```
