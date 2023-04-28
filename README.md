@@ -187,7 +187,7 @@
 ```
 
 # props 使用
-可以动态生成页面。例如在下面的例子中，render函数动态调用props中属性并且输出。此外，通过propTypes与defaultProps两个变量可以控制输出的类型以及默认值
+可以动态生成页面。例如在下面的例子中，render函数动态调用props中属性并且输出。此外，通过propTypes与defaultProps两个变量可以控制输出的类型以及默认值。在ReactDom的render方法中，可以直接写标签，也可以提前写好标签，用{...p}形式传入。另外，props是只读变量，不可以修改其中值。
 ```
     class MyComponent extends React.Component {
         static propTypes = {
@@ -216,5 +216,7 @@
     function demo() {
         return "xyx"
     }
+    const p = {name: "ls", speak: demo}
     ReactDOM.render(<MyComponent name = "zs" age = {20} speak = {demo}/>, document.getElementById("test"))
+    ReactDOM.render(<MyComponent {...p}/>, document.getElementById("test2"))
 ```
