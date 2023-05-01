@@ -379,4 +379,3 @@ componentWillUnmount: 组件将要被卸载时调用
 ```
 
 # 与组件生命周期有关的
-![image](https://user-images.githubusercontent.com/58120821/235509574-fd56e01b-4914-40c2-9eab-37b5db31595b.png)
