@@ -291,3 +291,43 @@
         }
     }
 ```
+
+# 函数柯里化：即函数输出是一个函数
+例如在下例中，通过让change函数输出一个函数的形式，能完成让state属性动态根据文本框内容改变
+```
+    class MyComponent extends React.Component {
+        state = {username: "", password: ""}
+        change = (dataType)=> {
+            return () => {
+                var val = event.target.value
+                this.setState({[dataType]: val})
+            }
+        }
+        render() {
+            return(
+                <form>
+                    userName: <input onChange = {this.change("username")}/>
+                    pass: <input onChange = {this.change("password")}/>
+                </form>
+            )
+        }
+    }
+```
+
+# 不用柯里化的写法：
+```
+    class MyComponent extends React.Component {
+        state = {username: "", password: ""}
+        change(datatype) {
+            this.setState({[datatype]: event.target.value})
+        }
+        render() {
+            return(
+                <form>
+                    userName: <input onChange = {()=>{this.change("username")}}/>
+                    pass: <input onChange = {()=>{this.change("password")}}/>
+                </form>
+            )
+        }
+    }
+```
