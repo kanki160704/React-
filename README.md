@@ -379,3 +379,47 @@ componentWillUnmount: 组件将要被卸载时调用
 ```
 
 # 与组件生命周期有关的
+有几种调用顺序
+1. construct -> componentWillMount -> render
+2. construct -> componentWillMount -> render
+3. setState方法 -> shouldComponentUpdate -> componentWillUpdate -> render
+4. forceUpdate方法 -> componentWillUpdate -> render
+5. 父组件render -> componentWillReceiveProps -> shouldComponentUpdate -> componentWillUpdate -> render
+其中 shouldComponentUpdate是一个返回布尔类型的函数，如果自己不写默认true，如果为false，那么接下来的步骤都不会进行。
+
+# 第五个调用顺序中父子组件例子
+这里两个组件都是继承Component，但是在MyComponent组件中render方法里有SonComponent的内容。这里点击按钮后，SonComponent会得到一个名叫name的prop，便会触发componentWillReceiveProps函数（该函数也可以有参数props）。注意这里再未点击按钮时不会有输出，componentWillReceiveProps只有在收到新的props才会调用。
+这里可以理解为点击按钮后，调用了父的render，因此调用了子组件。
+```
+    class MyComponent extends React.Component {
+        state = {name: "A"}
+        change = () => {
+            if (this.state.name == "A") {
+                this.setState({name: "B"})
+            }
+            else {
+                this.setState({name: "A"})
+            }
+        }
+        render() {
+            return(
+                <div>
+                    <h1>This is father</h1>
+                    <button onClick = {this.change}>change Name</button>
+                    <SonComponent name = {this.state.name}/>
+                </div>
+            )
+        }
+    }
+
+    class SonComponent extends React.Component {
+        componentWillReceiveProps() {
+            console.log("receive props")
+        }
+        render() {
+            return (
+                <h1>{this.props.name}</h1>
+            )
+        }
+    }
+```
