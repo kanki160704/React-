@@ -331,3 +331,52 @@
         }
     }
 ```
+
+# 各种内置方法调用时间
+render：每次经过更新调用一次
+componentDidMount：组件第一次挂载调用一次，更新不会调用
+componentWillUnmount: 组件将要被卸载时调用
+下面的例子能让文字透明度渐渐变化，按下按钮会删除所有组件
+注意定时器不可以放在render下，因为这样会被调用很多次（每次改变透明度都会调用一次render）
+另外也不能不写componentWillUnmount函数，因为这样在删除组件时还保留有定时器
+```
+    class MyComponent extends React.Component {
+        state = {opacity: 1}
+        change(datatype) {
+            this.setState({[datatype]: event.target.value})
+        }
+
+        death = (() => {
+            ReactDOM.unmountComponentAtNode(document.getElementById("test"))
+        })
+
+        componentDidMount() {
+            this.timer = setInterval(() => {
+                var val = this.state.opacity
+                if (val <= 0) {
+                    val = 1
+                }
+                else {
+                    val = val - 0.1
+                }
+                this.setState({"opacity": val})
+            }, 200)
+        }
+
+        componentWillUnmount() {
+            clearInterval(this.timer)
+        }
+
+        render() {
+            return(
+                <div>
+                    <h1 style = {{opacity: this.state.opacity}}>aaa</h1>
+                    <button onClick = {this.death}> 关闭所有组件 </button>
+                </div>
+            )
+        }
+    }
+```
+
+# 与组件生命周期有关的
+![image](https://user-images.githubusercontent.com/58120821/235509574-fd56e01b-4914-40c2-9eab-37b5db31595b.png)
