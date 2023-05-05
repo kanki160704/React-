@@ -423,3 +423,102 @@ componentWillUnmount: 组件将要被卸载时调用
         }
     }
 ```
+
+# 第一个脚手架完成的react程序
+index.html内容
+```
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>React App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+```
+
+index.js 内容
+```
+import React from "react"
+import ReactDom from "react-dom"
+import App from "./App"
+
+ReactDom.render(<App/>, document.getElementById("root"))
+```
+
+App.js 内容
+```
+import React from "react"
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        hello react
+      </div>
+    )
+  }
+}
+
+// 暴露App组件，让别人可以引入
+export default App
+```
+
+# 上一个的问题
+App是一个壳子，不应该出现过多文字
+在App.js中改变为以下内容
+```
+import React from "react"
+import Hello from "./Hello"
+class App extends React.Component {
+  render() {
+    return (
+      <Hello/>
+    )
+  }
+}
+
+// 暴露App组件，让别人可以引入
+export default App
+```
+同时添加Hello.js
+```
+import React from "react"
+class Hello extends React.Component {
+  render() {
+    return (
+      <h1>
+        hello react
+      </h1>
+    )
+  }
+}
+
+export default Hello
+```
+
+# 项目结构
+1. App.js，index.html，index.js 不用改名
+2. 在src文件夹下建立components文件夹，每一个小组件及其css等放在components下的一个文件夹中，例如上面例子中Hello.js放在components文件夹下Hello文件夹下
+3. 组件后缀名建议写jsx，区别于js
+
+# 样式模块化
+组件对应css文件取名例如：hello.module.css
+引入时引入为 import hello from "./hello.module.css"
+
+```
+import React from "react"
+import hello from './Hello.module.css'
+
+class Hello extends React.Component {
+  render() {
+    return (
+      <h1 className={hello.demo}>
+        hello react
+      </h1>
+    )
+  }
+}
+
+export default Hello
+```
